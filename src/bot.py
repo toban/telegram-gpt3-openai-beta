@@ -76,6 +76,7 @@ class Bot:
 
 		if text.startswith( '!clear' ):
 			self.clearMessages()
+			return
 
 		if text.startswith( '!set_agent_description=' ):
 			segments = text.split("=")
@@ -110,6 +111,7 @@ class Bot:
 
 			if diff > 1000 * 60:
 				self.clearMessages()
+				return
 
 
 		#self.talk(trimmed, self.reply_message)
