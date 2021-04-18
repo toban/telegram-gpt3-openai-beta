@@ -1,0 +1,11 @@
+class Setup:
+	config = {
+		"chat_id": 0, 
+		"bot_name": 0,
+		"bot_token": '<token>',
+		"voice_pitch": 90,
+
+		"open_api_key": '<api_key>',
+		#"logfile": "logger.log",
+
+	}
