@@ -12,6 +12,18 @@ Simple telegram bot using the open ai beta that thinks Shawn Carter is the same 
 - fill out config.py with open ai api and telegram bot tokens
 - run ```python main.py ``` and start asking questions
 
+## in chat commands
+
+clear message log to save tokens sent
+```
+!clear
+```
+
+change age
+```
+!set_agent_description=The assistant is helpful, creative, clever, and very friendly.
+```
+
 ## Example
 
 by updating `agent_desctiption` in api.py
