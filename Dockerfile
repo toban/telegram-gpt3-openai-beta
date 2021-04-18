@@ -15,11 +15,11 @@ ENV VOICE_PITCH ${VOICE_PITCH}
 ARG API_KEY
 ENV API_KEY ${API_KEY}
 
-RUN mkdir /app
-ADD src /app
-
 ADD requirements.txt requirements.txt
 RUN pip install -r requirements.txt
+
+RUN mkdir /app
+ADD src /app
 
 WORKDIR /app
 RUN mv config.py.docker.template config.py

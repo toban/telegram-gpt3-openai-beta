@@ -7,6 +7,8 @@ import sys
 from config import Setup
 import os
 from api import Api
+import time
+
 
 ## todo telegram.vendor.ptb_urllib3.urllib3.exceptions.ReadTimeoutError:
 ## todo telegram.error.BadRequest: Message must be non-empty
@@ -20,6 +22,7 @@ class Bot:
 		self.logger.info("starting bot! " + token[0:4])
 
 		self.api = Api()
+		self.messages = self.api.default_messages
 
 		self.updater = Updater(token=token, use_context=True)
 
@@ -28,7 +31,10 @@ class Bot:
 		self.updater.start_polling()
 
 		self.name = name
+		self.last_time = None
 		self.voice_pitch = voice_pitch
+		self.talk(self.api.intro + "\n\n" + self.api.agent_description)
+
 
 
 	def send_voice(self, message):
@@ -68,10 +74,43 @@ class Bot:
 
 		self.logger.info(user.first_name + " " + user.last_name + ": " + text)
 
-		responseText = self.api.sendRequest(text)
-		self.talk(responseText)
+		if text.startswith( '!clear' ):
+			self.clearMessages()
+
+		if text.startswith( '!set_agent_description=' ):
+			segments = text.split("=")
+			description=segments[1]
+
+			if description == None or len(segments) == 1:
+				description = self.api.default_agent_description
+		
+			self.api.setAgentDescription(description)
+			self.logger.info("setting agent description: " + description)
+			self.talk("setting agent description: " + description)
+			return
+
+		responseMessage, messages = self.api.sendRequest(text, self.messages)
+		self.messages = messages
+
+		self.talk(responseMessage)
+		self.last_time = int(round(time.time() * 1000))
+
+	def clearMessages(self): 
+		self.logger.info("clearing messages")
+		self.messages = self.api.default_messages
+		self.talk("How can i help you?")
+		self.last_time = None
 
 	def update(self):
+
+		if self.last_time != None:
+			now = int(round(time.time() * 1000))
+			diff = now - self.last_time
+			self.logger.info(diff)
+
+			if diff > 1000 * 60:
+				self.clearMessages()
+
 
 		#self.talk(trimmed, self.reply_message)
 		time.sleep(10)

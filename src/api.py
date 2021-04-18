@@ -11,28 +11,41 @@ class Api:
 
 		self.logger = logging.getLogger('Api')
 		self.token = token
-		openai.api_key = token
-
-
-	def sendRequest(self, userText):
-
-		userMessage = 'Human: ' + userText
-		intro='The following is a conversation with an AI assistant.'
-		agent_description='The assistant is helpful, creative, clever, and very friendly.'
-
-		botCompletion = 'AI:'
-
-		messages = [
+		self.default_agent_description = 'The assistant is helpful, creative, clever, and very friendly.'
+		self.default_messages = [
 			'Human: Hello, who are you?',
 			'AI: I am an AI created by OpenAI. How can I help you today?',
-			userMessage,
-			botCompletion
 		]
+		openai.api_key = token
+		self.intro ='The following is a conversation with an AI assistant.'
+		self.agent_description=self.default_agent_description
 
 
-		prompt = intro + " " + agent_description + "\n\n" + '\n'.join(messages)
 
-		#self.logger.info("sending:\n" + prompt )
+	def getCompletionResponse(self, response):
+		self.logger.info(response)
+		if len(response['choices']) == 1:
+			return response['choices'][0]['text']
+		else:
+			self.logger.info("Got more than one response!")
+			return response['choices'][0]['text']
+
+	def setAgentDescription(self, description):
+		self.agent_description = description
+
+	def sendRequest(self, userText, messages):
+
+		userMessage = 'Human: ' + userText
+		botCompletion = 'AI:'
+
+		# append messages
+		messages.append(userMessage)
+		messages.append(botCompletion)
+
+		lastPos = len(messages) - 1 
+
+		prompt = self.intro + " " + self.agent_description + "\n\n" + '\n'.join(messages)
+
 		response = openai.Completion.create(
 		  engine="davinci",
 		  prompt=prompt,
@@ -44,11 +57,8 @@ class Api:
 		  stop=["\n", " Human:", " AI:"]
 		)
 
+		responseMessage = self.getCompletionResponse(response)
+		messages[lastPos] = messages[lastPos] + responseMessage
 
-		self.logger.info(response)
-		if len(response['choices']) == 1:
-			return response['choices'][0]['text']
-		else:
-			self.logger.info("Got more than one response!")
-			return response['choices'][0]['text']
+		return responseMessage, messages
 

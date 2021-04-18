@@ -15,7 +15,6 @@ logger.info(Setup.config)
 
 bot = Bot(Setup.config['bot_token'], Setup.config['bot_name'], Setup.config['voice_pitch']) 
 
-
 while True:
 	try:
 		bot.update()
@@ -24,5 +23,6 @@ while True:
 
 		e = sys.exc_info()[0]
 		logger.error(e)
+		raise e
 		time.sleep(10)
 

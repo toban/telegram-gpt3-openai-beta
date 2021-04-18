@@ -8,4 +8,4 @@ docker:
 		--build-arg=BOT_TOKEN=${BOT_TOKEN} \
 		--build-arg=VOICE_PITCH=${VOICE_PITCH} \
 		--build-arg=API_KEY="${API_KEY}" \
-		. < Dockerfile --no-cache
+		. < Dockerfile
