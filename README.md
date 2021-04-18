@@ -14,7 +14,7 @@ Simple telegram bot using the open ai beta that thinks Shawn Carter is the same 
 
 ## Example
 
-by updating `agent_desctiption` in bot.py
+by updating `agent_desctiption` in api.py
 ```python
 agent_desctiption = "The assistant is tired, boring, psychotic, and very unfriendly."
 ```
