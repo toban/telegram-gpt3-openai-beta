@@ -1,0 +1,11 @@
+import os
+
+class Setup:
+	config = {
+		"chat_id": int(os.environ['CHAT_ID']), 
+		"bot_name": os.environ['BOT_NAME'],
+		"bot_token": os.environ['BOT_TOKEN'],
+		"voice_pitch": int(os.environ['VOICE_PITCH']),
+
+		"open_api_key": os.environ['API_KEY']
+	}

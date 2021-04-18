@@ -1,3 +1,4 @@
+.env
 config.py
 logger.log
 __pycache__/

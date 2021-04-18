@@ -11,6 +11,7 @@ logging.basicConfig(filename=logfile, format='%(asctime)s - %(name)s - %(levelna
 
 logger = logging.getLogger('Main')
 
+logger.info(Setup.config)
 
 bot = Bot(Setup.config['bot_token'], Setup.config['bot_name'], Setup.config['voice_pitch']) 
 
@@ -18,6 +19,7 @@ bot = Bot(Setup.config['bot_token'], Setup.config['bot_name'], Setup.config['voi
 while True:
 	try:
 		bot.update()
+		print("update!")
 	except:
 
 		e = sys.exc_info()[0]
